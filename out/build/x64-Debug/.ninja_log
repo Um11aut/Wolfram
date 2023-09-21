@@ -1,0 +1,26 @@
+# ninja log v5
+49	529	7170236113340534	deps/glfw/src/CMakeFiles/glfw.dir/osmesa_context.c.obj	f36303f92d98cd4a
+12	546	7170236113380543	deps/glfw/src/CMakeFiles/glfw.dir/init.c.obj	5c73800ecf682c36
+21	537	7170236113320521	deps/glfw/src/CMakeFiles/glfw.dir/monitor.c.obj	8fa37df9feb40bea
+27	553	7170236113380543	deps/glfw/src/CMakeFiles/glfw.dir/platform.c.obj	725bf763abc2052c
+32	560	7170236113350533	deps/glfw/src/CMakeFiles/glfw.dir/vulkan.c.obj	2ab06d86f449154f
+16	1315	7170236121260521	deps/glfw/src/CMakeFiles/glfw.dir/input.c.obj	e4f5623058702782
+44	1290	7170236120980522	deps/glfw/src/CMakeFiles/glfw.dir/egl_context.c.obj	c132e26cabdf5e3b
+530	847	7170236116590521	deps/glfw/src/CMakeFiles/glfw.dir/null_init.c.obj	5930ef6f03205e5f
+8	566	7170236113330523	deps/glfw/src/CMakeFiles/glfw.dir/context.c.obj	c3f45eca09f48f62
+986	1338	7170236121510540	deps/glfw/src/CMakeFiles/glfw.dir/wgl_context.c.obj	7355a2e3334c69e0
+39	573	7170236113420544	deps/glfw/src/CMakeFiles/glfw.dir/window.c.obj	c71cc4fef5a22002
+560	911	7170236117220527	deps/glfw/src/CMakeFiles/glfw.dir/win32_module.c.obj	c2179343b2b8b3dd
+575	971	7170236117750530	deps/glfw/src/CMakeFiles/glfw.dir/win32_thread.c.obj	44daa571bf3090a3
+546	978	7170236117870535	deps/glfw/src/CMakeFiles/glfw.dir/null_window.c.obj	83972b89d118ea57
+566	986	7170236117970518	deps/glfw/src/CMakeFiles/glfw.dir/win32_time.c.obj	20cc4aa5cc00805e
+15	585	7170289330824905	CMakeFiles/Wolfram.dir/main.cpp.obj	c1de9b97d1bf366
+553	1285	7170236120940535	deps/glfw/src/CMakeFiles/glfw.dir/null_joystick.c.obj	9ce48800b9f014f8
+848	1199	7170236120130517	deps/glfw/src/CMakeFiles/glfw.dir/win32_init.c.obj	72767111925c4b8e
+912	1280	7170236120850525	deps/glfw/src/CMakeFiles/glfw.dir/win32_joystick.c.obj	4d5d5fa55303e337
+537	1310	7170236121190535	deps/glfw/src/CMakeFiles/glfw.dir/null_monitor.c.obj	320ecbb7ca489d62
+978	1336	7170236121490524	deps/glfw/src/CMakeFiles/glfw.dir/win32_window.c.obj	a77d9dd3db24c4b6
+972	1343	7170236121570522	deps/glfw/src/CMakeFiles/glfw.dir/win32_monitor.c.obj	e0fc2db10dacdfc1
+1343	1405	7170236122100512	deps/glfw/src/glfw3.lib	30bd9063f3b89910
+586	720	7170289331853202	Wolfram.exe	f8e651302b88726d
+10	106	7170248676900778	CMakeFiles/Wolfram.dir/deps/glad/src/gl.c.obj	b347c92c535bd5c0
