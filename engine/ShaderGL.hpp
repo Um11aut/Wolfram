@@ -10,6 +10,8 @@
 
 class Shader {
 private:
+	GLuint ProgramID = glad_glCreateProgram();
+
 	void readShader(const char* file_path, std::string& ShaderCode) {
 
 		std::ifstream ShaderStream(file_path, std::ios::in);
@@ -55,16 +57,36 @@ private:
 			std::cout << ProgramErrorMessage[0] << std::endl;
 		}
 		else {
-			std::cout << "Shader compiled successfully!" << std::endl;
+			std::cout << "Shaders checked successfully!" << std::endl;
 		}
 	}
 public:
-	GLuint load(const char* vertex_file_path, const char* fragment_file_path) {
+	GLuint loadVertex(const char* vertex_file_path) {
 		GLuint VertexShaderId = glad_glCreateShader(GL_VERTEX_SHADER);
-		GLuint FragmentShaderId = glad_glCreateShader(GL_FRAGMENT_SHADER);
 
 		std::string VertexShaderCode;
 		readShader(vertex_file_path, VertexShaderCode);
+
+		GLint Result = GL_FALSE;
+		int InfoLogLength;
+
+		compileShader(VertexShaderCode, VertexShaderId);
+		checkShader(Result, InfoLogLength, VertexShaderId);
+
+		GLuint ProgramID = glad_glCreateProgram();
+		glad_glAttachShader(ProgramID, VertexShaderId);
+		glad_glLinkProgram(ProgramID);
+
+		checkProgram(ProgramID, Result, InfoLogLength);
+
+		glad_glDetachShader(ProgramID, VertexShaderId);
+
+		glad_glDeleteShader(VertexShaderId);
+
+		return ProgramID;
+	}
+	GLuint loadFragment(const char* fragment_file_path) {
+		GLuint FragmentShaderId = glad_glCreateShader(GL_FRAGMENT_SHADER);
 
 		std::string FragmentShaderCode;
 		readShader(fragment_file_path, FragmentShaderCode);
@@ -72,31 +94,19 @@ public:
 		GLint Result = GL_FALSE;
 		int InfoLogLength;
 
-		std::cout << "Compiling shader... " << vertex_file_path << std::endl;
-		compileShader(VertexShaderCode, VertexShaderId);
-		checkShader(Result, InfoLogLength, VertexShaderId);
-
-		std::cout << "Compiling shader... " << fragment_file_path << std::endl;
 		compileShader(FragmentShaderCode, FragmentShaderId);
 		checkShader(Result, InfoLogLength, FragmentShaderId);
 
-		std::cout << "Linking Program" << std::endl;
 		GLuint ProgramID = glad_glCreateProgram();
-		glad_glAttachShader(ProgramID, VertexShaderId);
 		glad_glAttachShader(ProgramID, FragmentShaderId);
 		glad_glLinkProgram(ProgramID);
 
 		checkProgram(ProgramID, Result, InfoLogLength);
 
-		glad_glDetachShader(ProgramID, VertexShaderId);
 		glad_glDetachShader(ProgramID, FragmentShaderId);
 
-		glad_glDeleteShader(VertexShaderId);
 		glad_glDeleteShader(FragmentShaderId);
 
 		return ProgramID;
 	}
-
-	GLuint loadVertex(const char* vertex_file_path) {}
-	GLuint loadFragment(const char* fragment_file_path) {}
 };

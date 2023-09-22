@@ -13,11 +13,12 @@ int main() {
     renderer->createVertexBuffer();
 
     Shader* shd = new Shader();
-    GLuint programID = shd->load("C:/Users/askk/CLionProjects/Wolfram/shaders/shader.vert", "C:/Users/askk/CLionProjects/Wolfram/shaders/shader.frag");
-    
+    GLuint programID = shd->loadVertex("C:/Users/askk/CLionProjects/Wolfram/shaders/shader.vert");
+    programID = shd->loadFragment("C:/Users/askk/CLionProjects/Wolfram/shaders/shader.frag");
 
     renderer->loop(Window::window, programID);
 
+    delete shd;
     delete renderer;
 
     return 0;
