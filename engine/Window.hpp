@@ -4,11 +4,11 @@
 namespace Window {
 	GLFWwindow* window;
 
-	void createGL() {
+	void createForGL(int maj_version, int min_version) {
 		glfwInit();
 
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 6);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, maj_version);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, min_version);
 		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 		window = glfwCreateWindow(800, 600, "Wolfram [OpenGL]", NULL, NULL);
@@ -20,17 +20,10 @@ namespace Window {
 		int version = gladLoadGL(glfwGetProcAddress);
 		std::cout << "Loaded OpenGL ";
 		std::cout << GLAD_VERSION_MAJOR(version) << "." << GLAD_VERSION_MINOR(version) << std::endl;
-	}
-
-	void loopGL() {
-		while (!glfwWindowShouldClose(window)) {
-			glfwPollEvents();
-			glfwSwapBuffers(window);
-		}
-
-		glfwTerminate();
+		glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
 	}
 
 	// TODO: implement
-	void createVK(GLFWwindow* window) {}
+	void createForVk(GLFWwindow* window) {}
+	void loopForVk(GLFWwindow* window) {}
 };

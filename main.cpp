@@ -1,13 +1,19 @@
 #include <iostream>
 #include "engine/Window.hpp"
 #include "engine/RendererGL.hpp"
+#include "engine/ShaderGL.hpp"
 
 int main() {
-    Window::createGL();
+    Window::createForGL(4,6);
 
-    Renderer* render = new RendererGL();
-    render->init();
+    RendererGL renderer;
+    renderer.setSamples(4);
+    renderer.createVertexArray();
+    renderer.createVertexBuffer();
 
-    Window::loopGL();
+    Shader shader;
+    shader.load("123", "123");
+
+    renderer.loop(Window::window);
     return 0;
 }
