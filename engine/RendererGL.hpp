@@ -32,9 +32,13 @@ public:
 		glad_glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 	}
 
-	void loop(GLFWwindow* window) {
+	void loop(GLFWwindow* window, GLuint& ProgramID) {
 		//exit loop on escape key
 		while (!glfwWindowShouldClose(window) && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
+			glad_glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			
+			glad_glUseProgram(ProgramID);
+
 			glad_glEnableVertexAttribArray(0);
 			glad_glBindBuffer(GL_ARRAY_BUFFER, VertexBuffer);
 			glVertexAttribPointer(
@@ -45,6 +49,7 @@ public:
 				0,
 				(void*) 0
 			);
+			glad_glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			glad_glDrawArrays(GL_TRIANGLES, 0, 3);
 			glad_glDisableVertexAttribArray(0);
 

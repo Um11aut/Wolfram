@@ -6,14 +6,19 @@
 int main() {
     Window::createForGL(4,6);
 
-    RendererGL renderer;
-    renderer.setSamples(4);
-    renderer.createVertexArray();
-    renderer.createVertexBuffer();
+    RendererGL* renderer = new RendererGL();
 
-    Shader shader;
-    shader.load("123", "123");
+    renderer->setSamples(4);
+    renderer->createVertexArray();
+    renderer->createVertexBuffer();
 
-    renderer.loop(Window::window);
+    Shader* shd = new Shader();
+    GLuint programID = shd->load("C:/Users/askk/CLionProjects/Wolfram/shaders/shader.vert", "C:/Users/askk/CLionProjects/Wolfram/shaders/shader.frag");
+    
+
+    renderer->loop(Window::window, programID);
+
+    delete renderer;
+
     return 0;
 }
