@@ -1,12 +1,16 @@
+#pragma once
+
 #include "Renderer.hpp"
 #include <glad/gl.h>
+#define GLFW_INCLUDE_NONE
 #include <iostream>
+#include <memory>
 
 // TODO: Take data from .obj
 static const GLfloat g_vertex_buffer_data[] = {
-	   -1.0f, -1.0f, 0.0f,
-	   1.0f, -1.0f, 0.0f,
-	   0.0f,  1.0f, 0.0f,
+	   -1.0f, -1.0f, 1.0f,
+	   2.0f, -3.0f, -1.0f,
+	   0.0f,  1.5f, 0.0f,
 };
 
 class RendererGL : public Renderer {
@@ -32,12 +36,11 @@ public:
 		glad_glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 	}
 
-	void loop(GLFWwindow* window, GLuint& ProgramID) {
+	void loop(GLFWwindow* window) {
 		//exit loop on escape key
 		while (!glfwWindowShouldClose(window) && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
 			glad_glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 			
-			glad_glUseProgram(ProgramID);
 
 			glad_glEnableVertexAttribArray(0);
 			glad_glBindBuffer(GL_ARRAY_BUFFER, VertexBuffer);
@@ -60,7 +63,5 @@ public:
 		glfwTerminate();
 	}
 
-	void init() override {
-		std::cout << "..." << std::endl;
-	}
+	void init() override {}
 };

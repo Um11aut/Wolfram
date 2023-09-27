@@ -2,24 +2,24 @@
 #include "engine/Window.hpp"
 #include "engine/RendererGL.hpp"
 #include "engine/ShaderGL.hpp"
+#include "engine/Camera.hpp"
 
 int main() {
     Window::createForGL(4,6);
 
-    RendererGL* renderer = new RendererGL();
+    RendererGL renderer;
 
-    renderer->setSamples(4);
-    renderer->createVertexArray();
-    renderer->createVertexBuffer();
+    renderer.setSamples(4);
+    renderer.createVertexArray();
+    renderer.createVertexBuffer();
 
-    Shader* shd = new Shader();
-    GLuint programID = shd->loadVertex("C:/Users/askk/CLionProjects/Wolfram/shaders/shader.vert");
-    programID = shd->loadFragment("C:/Users/askk/CLionProjects/Wolfram/shaders/shader.frag");
+    Shader shader;
 
-    renderer->loop(Window::window, programID);
+    shader.loadVertex("C:/Users/askk/CLionProjects/Wolfram/shaders/shader.vert");
+    shader.loadFragment("C:/Users/askk/CLionProjects/Wolfram/shaders/shader.frag");
+	shader.loadToGL();
 
-    delete shd;
-    delete renderer;
+    renderer.loop(wf::window);
 
     return 0;
 }

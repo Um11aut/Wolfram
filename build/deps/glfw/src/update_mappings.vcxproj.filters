@@ -1,0 +1,24 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\askk\CLionProjects\Wolfram\build\CMakeFiles\53e3013628e0bc4a61b40f5889e51c44\update_mappings.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\askk\CLionProjects\Wolfram\deps\glfw\src\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\askk\CLionProjects\Wolfram\deps\glfw\src\mappings.h.in">
+      <Filter>Header Files</Filter>
+    </None>
+    <None Include="C:\Users\askk\CLionProjects\Wolfram\deps\glfw\CMake\GenerateMappings.cmake" />
+    <None Include="C:\Users\askk\CLionProjects\Wolfram\build\deps\glfw\src\CMakeFiles\update_mappings" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{2C9DC48A-0398-39BE-9627-749B46525CF3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{47CB53E5-9EA2-33DC-B0A1-8394389CB85B}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

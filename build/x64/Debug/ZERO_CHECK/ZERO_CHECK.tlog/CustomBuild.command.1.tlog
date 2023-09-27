@@ -1,0 +1,10 @@
+^C:\USERS\ASKK\CLIONPROJECTS\WOLFRAM\BUILD\CMAKEFILES\7C446D8DC949B07DFFD577EA2099D342\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\Microsoft Visual Studio\2022\Community\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe" -SC:/Users/askk/CLionProjects/Wolfram -BC:/Users/askk/CLionProjects/Wolfram/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/askk/CLionProjects/Wolfram/build/Wolfram.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

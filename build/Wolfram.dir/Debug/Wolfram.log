@@ -1,0 +1,3 @@
+﻿  main.cpp
+C:\Users\askk\CLionProjects\Wolfram\engine\../extra/Helper.hpp(16,34): error C2440: return: невозможно преобразовать "const std::filesystem::path::value_type *" в "const char *"
+C:\Users\askk\CLionProjects\Wolfram\engine\../extra/Helper.hpp(16,34): message : Типы, на которые указывают указатели, не связаны; для преобразования требуется reinterpret_cast, приведение в стиле С или приведение в стиле функции в круглых скобках

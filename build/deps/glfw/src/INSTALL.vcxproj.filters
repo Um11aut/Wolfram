@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\askk\CLionProjects\Wolfram\build\CMakeFiles\53e3013628e0bc4a61b40f5889e51c44\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{2C9DC48A-0398-39BE-9627-749B46525CF3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
