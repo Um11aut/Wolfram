@@ -13,10 +13,10 @@
 #include <memory>
 #include <vector>
 
+#include "Application.hpp"
+
 class Shader {
 private:
-	GLuint ProgramID = glCreateProgram();
-
 	void readShader(const char* file_path, std::string& ShaderCode) {
 		std::ifstream ShaderStream(file_path, std::ios::in);
 
@@ -45,7 +45,8 @@ private:
 		if (InfoLogLength > 0) {
 			std::vector<char> ShaderErrorMessage(InfoLogLength + 1);
 			glGetShaderInfoLog(ShaderId, InfoLogLength, NULL, &ShaderErrorMessage[0]);
-			std::cout << ShaderErrorMessage[0] << std::endl;
+			std::cerr << ShaderErrorMessage[0] << std::endl;
+			throw std::runtime_error("Error while compiling shader");
 		}
 		else {
 			std::cout << "Shader compiled successfully!" << std::endl;
@@ -58,14 +59,16 @@ private:
 		if (InfoLogLength > 0) {
 			std::vector<char> ProgramErrorMessage(InfoLogLength + 1);
 			glGetProgramInfoLog(ProgramID, InfoLogLength, NULL, &ProgramErrorMessage[0]);
-			std::cout << ProgramErrorMessage[0] << std::endl;
+			std::cerr << ProgramErrorMessage[0] << std::endl;
 		}
 		else {
 			std::cout << "Shaders checked successfully!" << std::endl;
 		}
 	}
 public:
-	Shader() = default;
+	Shader() {
+		wf::ProgramID = glCreateProgram();
+	}
 
 	void loadVertex(const char* vertex_file_path) {
 		GLuint VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
@@ -79,12 +82,12 @@ public:
 		compileShader(VertexShaderCode, VertexShaderId);
 		checkShader(Result, InfoLogLength, VertexShaderId);
 
-		glAttachShader(this->ProgramID, VertexShaderId);
-		glLinkProgram(this->ProgramID);
+		glAttachShader(wf::ProgramID, VertexShaderId);
+		glLinkProgram(wf::ProgramID);
 
-		checkProgram(this->ProgramID, Result, InfoLogLength);
+		checkProgram(wf::ProgramID, Result, InfoLogLength);
 
-		glDetachShader(this->ProgramID, VertexShaderId);
+		glDetachShader(wf::ProgramID, VertexShaderId);
 
 		glDeleteShader(VertexShaderId);
 	}
@@ -101,21 +104,17 @@ public:
 		compileShader(FragmentShaderCode, FragmentShaderId);
 		checkShader(Result, InfoLogLength, FragmentShaderId);
 
-		glAttachShader(this->ProgramID, FragmentShaderId);
-		glLinkProgram(this->ProgramID);
+		glAttachShader(wf::ProgramID, FragmentShaderId);
+		glLinkProgram(wf::ProgramID);
 
-		checkProgram(this->ProgramID, Result, InfoLogLength);
+		checkProgram(wf::ProgramID, Result, InfoLogLength);
 
-		glDetachShader(this->ProgramID, FragmentShaderId);
+		glDetachShader(wf::ProgramID, FragmentShaderId);
 
 		glDeleteShader(FragmentShaderId);
 	}
 
 	void loadToGL() {
-		glUseProgram(this->ProgramID);
-	}
-
-	GLuint getProgramID() const {
-		return ProgramID;
+		glUseProgram(wf::ProgramID);
 	}
 };

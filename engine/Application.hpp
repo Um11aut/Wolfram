@@ -8,4 +8,6 @@ namespace wf {
 	GLFWwindow* window;
 
 	int WIDTH = 800, HEIGHT = 600;
+
+	GLuint ProgramID;
 }
