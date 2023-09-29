@@ -1,8 +1,12 @@
 #version 460
-layout(location = 0) in vec3 vertexPosition_modelspace;
+layout(location = 0) in vec3 vPos;
   
-uniform mat4 MVP;
+layout(std140, binding=0) uniform UniformData {
+  mat4 model;
+  mat4 view;
+  mat4 projection;
+};
   
 void main(){
-  gl_Position =  MVP * vec4(vertexPosition_modelspace,1);
+  gl_Position = projection * view * model * vec4(vPos,1);
 }

@@ -1,4 +1,5 @@
 #include <GLFW/glfw3.h>
+#include "Camera.hpp"
 
 class Renderer {
 public:

@@ -17,6 +17,13 @@
 
 class Shader {
 private:
+	GLuint ubo;
+
+	GLuint _programID = glCreateProgram();
+
+	GLuint VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
+	GLuint FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
+
 	void readShader(const char* file_path, std::string& ShaderCode) {
 		std::ifstream ShaderStream(file_path, std::ios::in);
 
@@ -43,10 +50,9 @@ private:
 		glGetShaderiv(ShaderId, GL_INFO_LOG_LENGTH, &InfoLogLength);
 
 		if (InfoLogLength > 0) {
-			std::vector<char> ShaderErrorMessage(InfoLogLength + 1);
-			glGetShaderInfoLog(ShaderId, InfoLogLength, NULL, &ShaderErrorMessage[0]);
-			std::cerr << ShaderErrorMessage[0] << std::endl;
-			throw std::runtime_error("Error while compiling shader");
+			std::string info_log(static_cast<size_t>(InfoLogLength) + 1, static_cast<char>(0));
+			glGetShaderInfoLog(ShaderId, static_cast<int32_t>(info_log.size()), nullptr, info_log.data());
+			std::cerr << info_log;
 		}
 		else {
 			std::cout << "Shader compiled successfully!" << std::endl;
@@ -62,16 +68,12 @@ private:
 			std::cerr << ProgramErrorMessage[0] << std::endl;
 		}
 		else {
-			std::cout << "Shaders checked successfully!" << std::endl;
+			std::cout << "Shader checked successfully!" << std::endl;
 		}
 	}
 public:
-	Shader() {
-		wf::ProgramID = glCreateProgram();
-	}
 
 	void loadVertex(const char* vertex_file_path) {
-		GLuint VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
 
 		std::string VertexShaderCode;
 		readShader(vertex_file_path, VertexShaderCode);
@@ -81,19 +83,9 @@ public:
 
 		compileShader(VertexShaderCode, VertexShaderId);
 		checkShader(Result, InfoLogLength, VertexShaderId);
-
-		glAttachShader(wf::ProgramID, VertexShaderId);
-		glLinkProgram(wf::ProgramID);
-
-		checkProgram(wf::ProgramID, Result, InfoLogLength);
-
-		glDetachShader(wf::ProgramID, VertexShaderId);
-
-		glDeleteShader(VertexShaderId);
 	}
 
 	void loadFragment(const char* fragment_file_path) {
-		GLuint FragmentShaderId = glCreateShader(GL_FRAGMENT_SHADER);
 
 		std::string FragmentShaderCode;
 		readShader(fragment_file_path, FragmentShaderCode);
@@ -103,18 +95,84 @@ public:
 
 		compileShader(FragmentShaderCode, FragmentShaderId);
 		checkShader(Result, InfoLogLength, FragmentShaderId);
+	}
 
-		glAttachShader(wf::ProgramID, FragmentShaderId);
-		glLinkProgram(wf::ProgramID);
+	void attachShaders() {
+		glAttachShader(_programID, VertexShaderId);
+		glAttachShader(_programID, FragmentShaderId);
+		glLinkProgram(_programID);
 
-		checkProgram(wf::ProgramID, Result, InfoLogLength);
+		// Check the program
+		GLint Result = GL_FALSE;
+		int InfoLogLength;
+		checkProgram(_programID, Result, InfoLogLength);
 
-		glDetachShader(wf::ProgramID, FragmentShaderId);
+		glDetachShader(_programID, VertexShaderId);
+		glDetachShader(_programID, FragmentShaderId);
 
+		glDeleteShader(VertexShaderId);
 		glDeleteShader(FragmentShaderId);
 	}
 
-	void loadToGL() {
-		glUseProgram(wf::ProgramID);
+	void bind() {
+		glUseProgram(_programID);
+	}
+
+	void unbind() {
+		glUseProgram(0);
+	}
+
+	void createUniformBuffer() {
+		glGenBuffers(1, &this->ubo);
+
+		if (this->ubo == 0) {
+			std::cerr << "Failed to create uniform buffer object." << std::endl;
+			// Handle error appropriately
+			return;
+		}
+
+		glBindBuffer(GL_UNIFORM_BUFFER, this->ubo);
+
+		if (glGetError() != GL_NO_ERROR) {
+			std::cerr << "Failed to bind uniform buffer object." << std::endl;
+			// Handle error appropriately
+			glBindBuffer(GL_UNIFORM_BUFFER, 0); // Unbind the buffer on error
+			return;
+		}
+		
+		glBufferData(GL_UNIFORM_BUFFER, sizeof(wf::Uniform), nullptr, GL_DYNAMIC_DRAW);
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
+
+		glBindBufferBase(GL_UNIFORM_BUFFER, 0, this->ubo);
+	}
+
+	void updateUniformBuffer(Camera* camera) {
+		if (this->ubo == 0) {
+			std::cerr << "Error: Uniform buffer object not initialized." << std::endl;
+			// Handle error appropriately
+			return;
+		}
+
+		wf::Uniform uniformData = camera->getUniform();
+
+		glBindBuffer(GL_UNIFORM_BUFFER, this->ubo);
+
+		GLenum bindError = glGetError();
+		if (bindError != GL_NO_ERROR) {
+			std::cerr << "Error binding uniform buffer: " << bindError << std::endl;
+			// Handle error appropriately
+			glBindBuffer(GL_UNIFORM_BUFFER, 0);
+			return;
+		}
+
+		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(wf::Uniform), &uniformData);
+
+		GLenum subDataError = glGetError();
+		if (subDataError != GL_NO_ERROR) {
+			std::cerr << "Error updating uniform buffer data: " << subDataError << std::endl;
+			// Handle error appropriately
+		}
+
+		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 	}
 };

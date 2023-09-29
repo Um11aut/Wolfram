@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Renderer.hpp"
+#include "ShaderGL.hpp"
 #include <glad/gl.h>
 #define GLFW_INCLUDE_NONE
 #include <iostream>
@@ -17,6 +18,8 @@ static const GLfloat g_vertex_buffer_data[] = {
 
 class RendererGL : public Renderer {
 private:
+	Shader shader;
+
 	GLuint VertexArrayID;
 	GLuint VertexBuffer;
 public:
@@ -38,33 +41,45 @@ public:
 		glBufferData(GL_ARRAY_BUFFER, sizeof(g_vertex_buffer_data), g_vertex_buffer_data, GL_STATIC_DRAW);
 	}
 
-	void loop(GLFWwindow* window) {
-		//exit loop on escape key
-		while (!glfwWindowShouldClose(window) && glfwGetKey(window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
-			glad_glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	void createShaders() {
+		shader.loadFragment("C:/Users/askk/CLionProjects/Wolfram/shaders/shader.frag");
+		shader.loadVertex("C:/Users/askk/CLionProjects/Wolfram/shaders/shader.vert");
+		shader.attachShaders();
+		
+		shader.createUniformBuffer();
+	}
+
+	void loop(GLFWwindow* window, Camera* cam) {
+		while (!glfwWindowShouldClose(wf::window) && glfwGetKey(wf::window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
+			//exit loop on escape key
+			glClear(GL_COLOR_BUFFER_BIT);
+
+			shader.bind();
+
+			shader.updateUniformBuffer(cam);
 
 			glEnableVertexAttribArray(0);
 			glBindBuffer(GL_ARRAY_BUFFER, VertexBuffer);
 			glVertexAttribPointer(
-				0,
-				3,
-				GL_FLOAT,
-				GL_FALSE,
-				0,
-				(void*) 0
+				0,                  // attribute. No particular reason for 0, but must match the layout in the shader.
+				3,                  // size
+				GL_FLOAT,           // type
+				GL_FALSE,           // normalized?
+				0,                  // stride
+				(void*)0            // array buffer offset
 			);
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glDrawArrays(GL_TRIANGLES, 0, 3);
-			glDisableVertexAttribArray(0);
+
+			// Draw the triangle !
+			glDrawArrays(GL_TRIANGLES, 0, 3); // 3 indices starting at 0 -> 1 triangle
 
 			glDisableVertexAttribArray(0);
 
+			shader.unbind();
 
-			glfwPollEvents();
 			glfwSwapBuffers(window);
+			glfwPollEvents();
 		}
 
-		glfwTerminate();
 	}
 
 	void init() override {}
