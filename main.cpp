@@ -3,26 +3,16 @@
 #include "engine/Window.hpp"
 #include "engine/RendererGL.hpp"
 #include "engine/ShaderGL.hpp"
-
-
-void APIENTRY debugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei length, const GLchar* message, const void* userParam) {
-    // Handle or print the debug information
-    std::cerr << "OpenGL Debug Message:" << std::endl;
-    std::cerr << "ID: " << id << std::endl;
-    std::cerr << "Message: " << message << std::endl;
-}
-
+#include "engine/Debugger.hpp"
 
 int main() {
-    Window::createForGL(4,6);
-
-    glEnable(GL_DEBUG_OUTPUT);
-    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
-    glDebugMessageCallback(debugCallback, nullptr);
-    glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE);
+    Window::createForGL(4, 6);
 
     RendererGL renderer;
+    Debugger debugger;
     Camera camera = Camera();
+    
+    debugger.init();
 
     renderer.setSamples(8);
     
@@ -30,9 +20,21 @@ int main() {
     renderer.createVertexBuffer();
     
     renderer.createShaders();
+    renderer.createUniformBuffer();
 
-    renderer.loop(wf::window, &camera);
-    
+    camera.setCameraDirection({ 1.0f, 1.0f, 1.0f });
+
+
+    while (!glfwWindowShouldClose(wf::window) && glfwGetKey(wf::window, GLFW_KEY_ESCAPE) != GLFW_PRESS) {
+        if (glfwGetKey(wf::window, GLFW_KEY_W) == GLFW_PRESS) {
+            camera.updateViewMatrix();
+        }
+        if (glfwGetKey(wf::window, GLFW_KEY_S) == GLFW_PRESS) {
+            camera.updateViewMatrix();
+        }
+        renderer.updateUniformBuffer(&camera);
+        renderer.loop(wf::window);
+    }
     glfwTerminate();
 
     return 0;

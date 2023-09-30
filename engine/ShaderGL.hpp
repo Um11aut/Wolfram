@@ -17,8 +17,6 @@
 
 class Shader {
 private:
-	GLuint ubo;
-
 	GLuint _programID = glCreateProgram();
 
 	GLuint VertexShaderId = glCreateShader(GL_VERTEX_SHADER);
@@ -120,59 +118,5 @@ public:
 
 	void unbind() {
 		glUseProgram(0);
-	}
-
-	void createUniformBuffer() {
-		glGenBuffers(1, &this->ubo);
-
-		if (this->ubo == 0) {
-			std::cerr << "Failed to create uniform buffer object." << std::endl;
-			// Handle error appropriately
-			return;
-		}
-
-		glBindBuffer(GL_UNIFORM_BUFFER, this->ubo);
-
-		if (glGetError() != GL_NO_ERROR) {
-			std::cerr << "Failed to bind uniform buffer object." << std::endl;
-			// Handle error appropriately
-			glBindBuffer(GL_UNIFORM_BUFFER, 0); // Unbind the buffer on error
-			return;
-		}
-		
-		glBufferData(GL_UNIFORM_BUFFER, sizeof(wf::Uniform), nullptr, GL_DYNAMIC_DRAW);
-		glBindBuffer(GL_UNIFORM_BUFFER, 0);
-
-		glBindBufferBase(GL_UNIFORM_BUFFER, 0, this->ubo);
-	}
-
-	void updateUniformBuffer(Camera* camera) {
-		if (this->ubo == 0) {
-			std::cerr << "Error: Uniform buffer object not initialized." << std::endl;
-			// Handle error appropriately
-			return;
-		}
-
-		wf::Uniform uniformData = camera->getUniform();
-
-		glBindBuffer(GL_UNIFORM_BUFFER, this->ubo);
-
-		GLenum bindError = glGetError();
-		if (bindError != GL_NO_ERROR) {
-			std::cerr << "Error binding uniform buffer: " << bindError << std::endl;
-			// Handle error appropriately
-			glBindBuffer(GL_UNIFORM_BUFFER, 0);
-			return;
-		}
-
-		glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(wf::Uniform), &uniformData);
-
-		GLenum subDataError = glGetError();
-		if (subDataError != GL_NO_ERROR) {
-			std::cerr << "Error updating uniform buffer data: " << subDataError << std::endl;
-			// Handle error appropriately
-		}
-
-		glBindBuffer(GL_UNIFORM_BUFFER, 0);
 	}
 };

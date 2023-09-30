@@ -2,7 +2,7 @@
 #include "Application.hpp"
 
 namespace Window {
-	int WIDTH = 1920, HEIGHT = 1080;
+	int WIDTH = 800, HEIGHT = 600;
 
 	void createForGL(int maj_version, int min_version) {
 		glfwInit();
@@ -21,6 +21,10 @@ namespace Window {
 		std::cout << "Loaded OpenGL ";
 		std::cout << GLAD_VERSION_MAJOR(version) << "." << GLAD_VERSION_MINOR(version) << std::endl;
 		glfwSetInputMode(wf::window, GLFW_STICKY_KEYS, GL_TRUE);
+	}
+
+	void framebuffer_size_callbackGL(GLFWwindow* window, int width, int height) {
+		glViewport(0, 0, width, height);
 	}
 
 	// TODO: implement
